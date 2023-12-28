@@ -1,0 +1,5 @@
+.gitignore
+project.pdf
+README.md
+Dockerfile
+database.db
