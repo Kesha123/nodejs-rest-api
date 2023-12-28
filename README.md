@@ -12,9 +12,9 @@
 ## Setup
  - [ ] Clone repository
     ```
-    git clone git@github.com:Kesha123/tamk-5G00DM05-3004.git
+    git clone git@github.com:Kesha123/nodejs-rest-api.git
 
-    cd tamk-5G00DM05-3004/project
+    cd nodejs-rest-api
     ```
 
  - [ ] Install production packages
