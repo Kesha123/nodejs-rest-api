@@ -1,7 +1,6 @@
 # Project
 
-**Author**: Innokentii Kozlov
-**Date**: 11.12.2023
+Node.js + Express.js REST API, which provides CRUD operations on a table in SQLite3.
 
 ## Requirements
 
@@ -40,6 +39,16 @@ sqlite3 database.db < sql/delete.sql
 ```
 
 ## Run
+
+ - [ ] Run Docker
+    ```
+    docker pull ghcr.io/kesha123/nodejs-rest-api:1.0.0
+    ```
+
+    ```
+    docker run -p 8080:8080 ghcr.io/kesha123/nodejs-rest-api:1.0.0
+    ```
+
 
  - [ ] Run production
     ```
