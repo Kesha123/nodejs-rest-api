@@ -3,6 +3,12 @@
 **Author**: Innokentii Kozlov
 **Date**: 11.12.2023
 
+## Requirements
+
+ - [ ] `NodeJS` >= 19
+ - [ ] `Docker`
+ - [ ] `Sqlite3`
+
 ## Setup
  - [ ] Clone repository
     ```
@@ -15,6 +21,23 @@
     ```
     npm install --production
     ```
+
+## Database Setup
+
+- [ ] Create Database and create table statements
+```
+sqlite3 database.db < sql/create.sql
+```
+
+- [ ] Insert statements for tables
+```
+sqlite3 database.db < sql/insert.sql
+```
+
+- [ ] Delete statements to empty data in all tables
+```
+sqlite3 database.db < sql/delete.sql
+```
 
 ## Run
 
