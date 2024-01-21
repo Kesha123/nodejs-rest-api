@@ -26,6 +26,3 @@ spec:
         - name: api-data
           persistentVolumeClaim:
             claimName: api-pvc
-
-# You can create registry key with the following command:
-# kubectl create secret docker-registry <your-registry-key-name> --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL

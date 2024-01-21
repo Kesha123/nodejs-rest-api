@@ -4,9 +4,16 @@ Node.js + Express.js REST API, which provides CRUD operations on a table in SQLi
 
 ## Requirements
 
+### Plain mode
  - [ ] `NodeJS` >= 19
- - [ ] `Docker`
  - [ ] `Sqlite3`
+
+### Docker
+- [ ] `Docker`
+
+### Kubernetes
+- [ ] `Minikube` / other tool / cloud provider
+- [ ] `kubectl`
 
 ## Setup
  - [ ] Clone repository
@@ -48,6 +55,17 @@ sqlite3 database.db < sql/delete.sql
     ```
     docker run -p 8080:8080 ghcr.io/kesha123/nodejs-rest-api:1.0.0
     ```
+
+ - [ ] Run K8S
+      1. Build an image.
+      2. Push image to the registry of your choice. Don't forget to add registry key if the registry os private.
+      ```
+      kubectl create secret docker-registry <your-registry-key-name> --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
+      ```
+      3. Update `kubernetes/deployment.yaml` with you imnage
+      ```
+      kubectl apply -f=kubernetes/deployment.yaml -f=kubernetes/service.yaml -f=kubernetes/persistent-volume-claim.yaml -f=kubernetes/persistent-volume.yaml
+      ```
 
 
  - [ ] Run production
