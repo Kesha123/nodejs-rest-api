@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: api-deployment
+
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: ghcr.io/<your-repository>/nodejs-rest-api:latest
+        volumeMounts:
+          - mountPath: /usr/app
+            name: api-data
+      imagePullSecrets:
+        - name: <your-registry-key-name>
+      volumes:
+        - name: api-data
+          persistentVolumeClaim:
+            claimName: api-pvc
+
+# You can create registry key with the following command:
+# kubectl create secret docker-registry <your-registry-key-name> --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
