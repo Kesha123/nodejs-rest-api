@@ -1,6 +1,6 @@
 # Node.js REST API with NestJs
 
-![CI](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/ci.yaml/badge.svg)
+![CI](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/api-ci.yaml/badge.svg)
 ![K8S Deployment](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/k8s-deployment.yaml/badge.svg)
 ![AWS Deployment](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/aws-deployment.yaml/badge.svg)
 
