@@ -1,9 +1,11 @@
-name: Test
+name: API Test
 
 
 on:
   workflow_call:
   push:
+    branches:
+      - main
     paths:
       ".github/workflows/api/test.yaml"
 

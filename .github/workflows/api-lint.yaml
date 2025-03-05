@@ -1,9 +1,11 @@
-name: Lint
+name: API Lint
 
 
 on:
   workflow_call:
   push:
+    branches:
+      - main
     paths:
       ".github/workflows/api/lint.yaml"
 

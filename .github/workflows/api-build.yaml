@@ -1,9 +1,11 @@
-name: Build
+name: API Build
 
 
 on:
   workflow_call:
   push:
+    branches:
+      - main
     paths:
       ".github/workflows/api/build.yaml"
 
