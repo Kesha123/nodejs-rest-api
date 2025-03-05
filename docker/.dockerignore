@@ -1,0 +1,11 @@
+dist/
+node_modules/
+test/
+.env
+.eslintrc.js
+.gitignore
+.dockerignore
+.prettierrc
+nest-cli.json
+tsconfig.build.json
+tsconfig.jsonz

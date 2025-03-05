@@ -1,0 +1,35 @@
+name: CI
+
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci.yaml"
+      - "api/**"
+      - "iac/**"
+
+
+concurrency:
+  group: ${{ github.workflow }}-ci
+  cancel-in-progress: false
+
+
+jobs:
+  api-lint:
+    name: API Lint
+    uses: ./.github/workflows/api/lint.yaml
+    secrets: inherit
+
+  api-test:
+    name: API Test
+    needs: api-lint
+    uses: ./.github/workflows/api/test.yaml
+    secrets: inherit
+
+  api-build:
+    name: API Build
+    needs: api-test
+    uses: ./.github/workflows/api/build.yaml
+    secrets: inherit

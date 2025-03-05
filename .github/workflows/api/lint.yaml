@@ -1,0 +1,40 @@
+name: Lint
+
+
+on:
+  workflow_call:
+  push:
+    paths:
+      ".github/workflows/api/lint.yaml"
+
+
+concurrency:
+  group: ${{  github.workflow }}-api-lint
+  cancel-in-progress: false
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linter
+        run: npm run lint
