@@ -1,4 +1,4 @@
-name: Docker Build and Push
+name: Migrations Docker Build and Push
 
 
 on:
@@ -20,7 +20,7 @@ on:
 
 env:
   IMAGE_REPOSITORY: ghcr.io/kesha123/nodejs-rest-api
-  IMAGE_NAME: api
+  IMAGE_NAME: postgres-migrations
 
 
 jobs:
@@ -75,7 +75,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: ./api
-        file: ./docker/Dockerfile
+        file: ./docker/Dockerfile.migrations
         platforms: ${{ matrix.platform }}
         labels: ${{ steps.meta.outputs.labels }}
         outputs: type=image,"name=${{ env.IMAGE_REPOSITORY }}",push=true
@@ -148,4 +148,4 @@ jobs:
       - name: Set Output
         id: set_output
         run: |
-          echo 'image={"image":"${{ env.IMAGE_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"}' >> $GITHUB_OUTPUT
+          echo 'image={"migrations":"${{ env.IMAGE_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"}' >> $GITHUB_OUTPUT

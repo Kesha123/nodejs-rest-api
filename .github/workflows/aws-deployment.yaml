@@ -1,0 +1,25 @@
+name: AWS Deployment
+
+
+on:
+  workflow_dispatch:
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-aws-deployment
+  cancel-in-progress: true
+
+
+jobs:
+  aws-environment-deploy:
+    name: AWS Environment Deploy
+    uses: ./.github/workflows/aws-environment-deploy.yaml
+    secrets: inherit
+
+  api-lambda-deploy:
+    name: API Lambda Deploy
+    needs: aws-environment-deploy
+    uses: ./.github/workflows/api-lambda-deploy.yaml
+    secrets: inherit
+    with:
+      LAMBDA_NAME: ${{ fromJson(needs.call-cloud-stack-deploy.outputs.resources).resources.lambdaName }}

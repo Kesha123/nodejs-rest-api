@@ -1,0 +1,17 @@
+name: API Lambda Deploy
+
+
+on:
+  workflow_call:
+    inputs:
+      LAMBDA_NAME:
+        required: true
+        type: string
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-api-lambda-deploy
+  cancel-in-progress: true
+
+
+jobs:
