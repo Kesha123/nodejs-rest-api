@@ -15,3 +15,11 @@ concurrency:
 
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - name: Test
+        run: echo "Testing API"
