@@ -1,8 +1,4 @@
-# Content
-*.bak
-*.tmp
-*tmplate*
-*[#~]
+**/*.env
 node_modules/
-tmp/
-my-database.db*
+dist/
+postgres-data/
