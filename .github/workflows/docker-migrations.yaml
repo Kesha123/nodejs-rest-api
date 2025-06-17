@@ -2,7 +2,7 @@ name: Docker Build and Push - Migrations
 
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       TAG:
         type: string
