@@ -67,7 +67,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: ./data
-        file: ./data/migrations/docker/Dockerfile
+        file: ./data/docker/Dockerfile
         platforms: ${{ matrix.platform }}
         labels: ${{ steps.meta.outputs.labels }}
         outputs: type=image,"name=${{ env.IMAGE_REPOSITORY }}",push=true
