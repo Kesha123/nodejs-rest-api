@@ -6,11 +6,13 @@ on:
       - main
     paths:
       - "data/**"
+      - ".github/workflows/ci-datasource.yaml"
       - ".github/workflows/docker-migrations.yaml"
       - ".github/workflows/lint-datasource.yaml"
       - ".github/workflows/test-datasource.yaml"
       - ".github/workflows/npm-datasource.yaml"
   workflow_dispatch:
+
 
 concurrency:
   group: ${{  github.workflow }}
