@@ -34,6 +34,7 @@ jobs:
   docker:
     name: Docker Build and Push
     # needs: test
+    needs: lint
     uses: ./.github/workflows/docker-migrations.yaml
     secrets: inherit
     with:
@@ -42,5 +43,6 @@ jobs:
   npm-build:
     name: NPM Build
     # needs: test
+    needs: lint
     uses: ./.github/workflows/npm-datasource.yaml
     secrets: inherit
