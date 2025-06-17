@@ -10,6 +10,7 @@ on:
       - ".github/workflows/lint-api.yaml"
       - ".github/workflows/test-api.yaml"
       - ".github/workflows/docker-api.yaml"
+      - ".github/workflows/npm-api.yaml"
       - "api/**"
   workflow_dispatch:
 
