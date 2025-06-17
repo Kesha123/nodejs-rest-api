@@ -39,30 +39,11 @@ jobs:
           name: data-build
           path: data/dist/
 
-  publish:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      contents: read
-      packages: write
-    strategy:
-      matrix:
-        node-version: [20]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: ${{ env.NPM_REGISTRY_URL }}
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: data-build
-          path: data/dist/
 
       - name: Publish package
         run: npm publish
