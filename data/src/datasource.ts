@@ -1,7 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import { config } from 'dotenv';
-import * as fs from 'fs';
 
 config();
 
@@ -21,7 +20,7 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
     ca: process.env.CA,
     key: process.env.KEY,
     cert: process.env.CERT,
-  }
+  },
 });
 
 export const ApiDataSource = new DataSource(getDataSourceOptions());

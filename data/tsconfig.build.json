@@ -17,12 +17,5 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  },
-  "files": [
-    "jest.config.ts"
-  ],
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts"
-  ]
+  }
 }
