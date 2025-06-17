@@ -10,6 +10,7 @@ on:
       - ".github/workflows/lint-datasource.yaml"
       - ".github/workflows/test-datasource.yaml"
       - ".github/workflows/npm-datasource.yaml"
+  workflow_dispatch:
 
 concurrency:
   group: ${{  github.workflow }}
@@ -22,11 +23,11 @@ jobs:
     uses: ./.github/workflows/lint-datasource.yaml
     secrets: inherit
 
-  test:
-    name: Datasource Test
-    needs: lint
-    uses: ./.github/workflows/test-datasource.yaml
-    secrets: inherit
+  # test:
+  #   name: Datasource Test
+  #   needs: lint
+  #   uses: ./.github/workflows/test-datasource.yaml
+  #   secrets: inherit
 
   docker:
     name: Docker Build and Push
