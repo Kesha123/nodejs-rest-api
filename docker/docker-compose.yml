@@ -1,0 +1,39 @@
+version: "3.8"
+
+
+services:
+  database:
+    image: ghcr.io/kesha123/nodejs-rest-api/postgres:${DATABASE_IMAGE_TAG:-latest}
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nodejs-rest-api
+    ports:
+      - 5432:5432
+
+  api:
+    image: ghcr.io/kesha123/nodejs-rest-api/api:${API_IMAGE_TAG:-latest}
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+
+  migrations:
+    image: ghcr.io/kesha123/nodejs-rest-api/migrations:${MIGRATIONS_IMAGE_TAG:-latest}
+    env_file:
+      - .env
+    command: ["npx", "typeorm-ts-node-commonjs", "-d", "src/datasource.ts", "migration:run"]
+    depends_on:
+      - database
+
+
+networks:
+  nodejs-rest-api:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

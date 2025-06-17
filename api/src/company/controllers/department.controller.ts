@@ -12,6 +12,7 @@ import {
   Logger,
   ParseIntPipe,
   HttpCode,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -25,7 +26,6 @@ import { DepartmentCreateDto } from '../dtos/department/department-create.dto';
 import { DepartmentPutDto } from '../dtos/department/department-put.dto';
 import { DepartmentPatchDto } from '../dtos/department/department-patch.dto';
 import { DepartmentDto } from '../dtos/department/department.dto';
-import { DepartmentNotFoundError } from '../errors/department-not-found.error';
 
 @ApiTags('department')
 @Controller('department')
@@ -53,7 +53,7 @@ export class DepartmentController {
     try {
       return await this.departmentService.getDepartment(deptno);
     } catch (error) {
-      if (error instanceof DepartmentNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -108,7 +108,7 @@ export class DepartmentController {
         departmentPutDto,
       );
     } catch (error) {
-      if (error instanceof DepartmentNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -138,7 +138,7 @@ export class DepartmentController {
         departmentPatchDto,
       );
     } catch (error) {
-      if (error instanceof DepartmentNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -160,7 +160,7 @@ export class DepartmentController {
     try {
       await this.departmentService.deleteDepartment(deptno);
     } catch (error) {
-      if (error instanceof DepartmentNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {

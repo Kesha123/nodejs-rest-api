@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DepartmentService } from '../../src/company/services/department.service';
-import { DepartmentNotFoundError } from '../../src/company/errors/department-not-found.error';
 import { DataSource } from 'typeorm';
 import {
   mockDataSource,
@@ -14,6 +13,7 @@ import { classes } from '@automapper/classes';
 import { DepartmentCreateDto } from '../../src/company/dtos/department/department-create.dto';
 import { DepartmentPutDto } from '../../src/company/dtos/department/department-put.dto';
 import { DepartmentPatchDto } from '../../src/company/dtos/department/department-patch.dto';
+import { NotFoundException } from '@nestjs/common';
 
 describe('DepartmentService', () => {
   let service: DepartmentService;
@@ -56,9 +56,9 @@ describe('DepartmentService', () => {
       );
     });
 
-    it('should throw DepartmentNotFoundError if employee not found', async () => {
+    it('should throw NotFoundException if employee not found', async () => {
       await expect(service.getDepartment(999)).rejects.toThrow(
-        DepartmentNotFoundError,
+        NotFoundException,
       );
       expect(mockEntityManager.findOne).toHaveBeenCalledWith(
         expect.anything(),
@@ -118,14 +118,14 @@ describe('DepartmentService', () => {
       expect(mockEntityManager.update).toHaveBeenCalled();
     });
 
-    it('should throw DepartmentNotFoundError if department not found', async () => {
+    it('should throw NotFoundException if department not found', async () => {
       const putDto: DepartmentPutDto = {
         dname: 'RESEARCH & DEV',
         loc: 'AUSTIN',
       };
 
       await expect(service.putDepartment(999, putDto)).rejects.toThrow(
-        DepartmentNotFoundError,
+        NotFoundException,
       );
     });
   });
@@ -163,13 +163,13 @@ describe('DepartmentService', () => {
       expect(result.dname).not.toBeUndefined();
     });
 
-    it('should throw DepartmentNotFoundError if department not found', async () => {
+    it('should throw NotFoundException if department not found', async () => {
       const patchDto: DepartmentPatchDto = {
         loc: 'SEATTLE',
       };
 
       await expect(service.patchDepartment(999, patchDto)).rejects.toThrow(
-        DepartmentNotFoundError,
+        NotFoundException,
       );
     });
   });
@@ -189,9 +189,9 @@ describe('DepartmentService', () => {
       });
     });
 
-    it('should throw DepartmentNotFoundError if department not found', async () => {
+    it('should throw NotFoundException if department not found', async () => {
       await expect(service.deleteDepartment(999)).rejects.toThrow(
-        DepartmentNotFoundError,
+        NotFoundException,
       );
     });
   });

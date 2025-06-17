@@ -40,7 +40,8 @@
     "pg": "^8.13.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "@kesha123/nodejs-rest-api-datasource": "1.0.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

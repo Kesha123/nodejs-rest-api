@@ -1,0 +1,43 @@
+name: CI - datasource
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "data/**"
+      - ".github/workflows/docker-migrations.yaml"
+      - ".github/workflows/lint-datasource.yaml"
+      - ".github/workflows/test-datasource.yaml"
+      - ".github/workflows/npm-datasource.yaml"
+
+concurrency:
+  group: ${{  github.workflow }}
+  cancel-in-progress: true
+
+
+jobs:
+  lint:
+    name: Datasource Lint
+    uses: ./.github/workflows/lint-datasource.yaml
+    secrets: inherit
+
+  test:
+    name: Datasource Test
+    needs: lint
+    uses: ./.github/workflows/test-datasource.yaml
+    secrets: inherit
+
+  docker:
+    name: Docker Build and Push
+    needs: test
+    uses: ./.github/workflows/docker-migrations.yaml
+    secrets: inherit
+    with:
+      TAG: ${{ github.sha }}
+
+  npm-build:
+    name: NPM Build
+    needs: test
+    uses: ./.github/workflows/npm-datasource.yaml
+    secrets: inherit

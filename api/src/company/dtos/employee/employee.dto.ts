@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
+import { DepartmentDto } from '../department/department.dto';
 
 export class EmployeeDto {
   @ApiProperty({ description: 'Employee number', example: 1 })
@@ -16,7 +17,7 @@ export class EmployeeDto {
 
   @ApiProperty({ description: 'Manager number', required: false })
   @AutoMap()
-  mgr?: number;
+  mgr: number | null;
 
   @ApiProperty({ description: 'Hire date' })
   @AutoMap()
@@ -39,9 +40,9 @@ export class EmployeeDto {
     example: 500.0,
   })
   @AutoMap()
-  comm?: number;
+  comm: number | null;
 
   @ApiProperty({ description: 'Department' })
   @AutoMap()
-  dept: number;
+  dept: DepartmentDto;
 }

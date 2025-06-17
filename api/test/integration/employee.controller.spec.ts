@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, Logger, NotFoundException, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { EmployeeController } from '../../src/company/controllers/employee.controller';
 import { EmployeeService } from '../../src/company/services/employee.service';
-import { EmployeeNotFoundError } from '../../src/company/errors/employee-not-found.error';
 import { mockEmployeeService } from '../utils/employee-service.mock';
 
 describe('EmployeeController (Integration)', () => {
@@ -23,6 +22,8 @@ describe('EmployeeController (Integration)', () => {
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
+
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
 
     // Reset all mocks before each test
     jest.clearAllMocks();
@@ -54,7 +55,7 @@ describe('EmployeeController (Integration)', () => {
       const empno = 999;
 
       mockEmployeeService.getEmployee.mockRejectedValueOnce(
-        new EmployeeNotFoundError(empno),
+        new NotFoundException(`Employee with empno ${empno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -165,7 +166,7 @@ describe('EmployeeController (Integration)', () => {
       };
 
       mockEmployeeService.putEmployee.mockRejectedValueOnce(
-        new EmployeeNotFoundError(empno),
+        new NotFoundException(`Employee with empno ${empno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -223,7 +224,7 @@ describe('EmployeeController (Integration)', () => {
       };
 
       mockEmployeeService.patchEmployee.mockRejectedValueOnce(
-        new EmployeeNotFoundError(empno),
+        new NotFoundException(`Employee with empno ${empno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -255,7 +256,7 @@ describe('EmployeeController (Integration)', () => {
       const empno = 999;
 
       mockEmployeeService.deleteEmployee.mockRejectedValueOnce(
-        new EmployeeNotFoundError(empno),
+        new NotFoundException(`Employee with empno ${empno} not found`),
       );
 
       return request(app.getHttpServer())

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { EmployeeController } from '../../src/company/controllers/employee.controller';
 import { DepartmentController } from '../../src/company/controllers/department.controller';
@@ -25,6 +25,8 @@ describe('Error Handling (Integration)', () => {
         },
       ],
     }).compile();
+
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());

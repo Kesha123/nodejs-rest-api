@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, Logger, NotFoundException, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { DepartmentController } from '../../src/company/controllers/department.controller';
 import { DepartmentService } from '../../src/company/services/department.service';
-import { DepartmentNotFoundError } from '../../src/company/errors/department-not-found.error';
 import { mockDepartmentService } from '../utils/department-service.mock';
 
 describe('DepartmentController (Integration)', () => {
@@ -19,6 +18,8 @@ describe('DepartmentController (Integration)', () => {
         },
       ],
     }).compile();
+
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
@@ -53,7 +54,7 @@ describe('DepartmentController (Integration)', () => {
       const deptno = 999;
 
       mockDepartmentService.getDepartment.mockRejectedValueOnce(
-        new DepartmentNotFoundError(deptno),
+        new NotFoundException(`Department with deptno ${deptno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -147,7 +148,7 @@ describe('DepartmentController (Integration)', () => {
       };
 
       mockDepartmentService.putDepartment.mockRejectedValueOnce(
-        new DepartmentNotFoundError(deptno),
+        new NotFoundException(`Department with deptno ${deptno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -189,7 +190,7 @@ describe('DepartmentController (Integration)', () => {
       };
 
       mockDepartmentService.patchDepartment.mockRejectedValueOnce(
-        new DepartmentNotFoundError(deptno),
+        new NotFoundException(`Department with deptno ${deptno} not found`),
       );
 
       return request(app.getHttpServer())
@@ -221,7 +222,7 @@ describe('DepartmentController (Integration)', () => {
       const deptno = 999;
 
       mockDepartmentService.deleteDepartment.mockRejectedValueOnce(
-        new DepartmentNotFoundError(deptno),
+        new NotFoundException(`Department with deptno ${deptno} not found`),
       );
 
       return request(app.getHttpServer())

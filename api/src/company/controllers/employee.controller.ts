@@ -12,6 +12,7 @@ import {
   Logger,
   ParseIntPipe,
   HttpCode,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -25,7 +26,6 @@ import { EmployeeCreateDto } from '../dtos/employee/employee-create.dto';
 import { EmployeePutDto } from '../dtos/employee/employee-put.dto';
 import { EmployeePatchDto } from '../dtos/employee/employee-patch.dto';
 import { EmployeeDto } from '../dtos/employee/employee.dto';
-import { EmployeeNotFoundError } from '../errors/employee-not-found.error';
 
 @ApiTags('employee')
 @Controller('employee')
@@ -53,7 +53,7 @@ export class EmployeeController {
     try {
       return await this.employeeService.getEmployee(empno);
     } catch (error) {
-      if (error instanceof EmployeeNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -105,7 +105,7 @@ export class EmployeeController {
     try {
       return await this.employeeService.putEmployee(empno, employeePutDto);
     } catch (error) {
-      if (error instanceof EmployeeNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -132,7 +132,7 @@ export class EmployeeController {
     try {
       return await this.employeeService.patchEmployee(empno, employeePatchDto);
     } catch (error) {
-      if (error instanceof EmployeeNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {
@@ -154,7 +154,7 @@ export class EmployeeController {
     try {
       return await this.employeeService.deleteEmployee(empno);
     } catch (error) {
-      if (error instanceof EmployeeNotFoundError) {
+      if (error instanceof NotFoundException) {
         this.logger.error(error.message);
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
       } else {

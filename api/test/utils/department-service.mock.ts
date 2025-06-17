@@ -2,14 +2,14 @@ import { DepartmentDto } from '../../src/company/dtos/department/department.dto'
 import { DepartmentCreateDto } from '../../src/company/dtos/department/department-create.dto';
 import { DepartmentPutDto } from '../../src/company/dtos/department/department-put.dto';
 import { DepartmentPatchDto } from '../../src/company/dtos/department/department-patch.dto';
-import { DepartmentNotFoundError } from '../../src/company/errors/department-not-found.error';
+import { NotFoundException } from '@nestjs/common';
 
 export const mockDepartmentService = {
   getDepartment: jest
     .fn()
     .mockImplementation((deptno: number): Promise<DepartmentDto> => {
       if (deptno === 999) {
-        return Promise.reject(new DepartmentNotFoundError(deptno));
+        return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
       }
 
       return Promise.resolve({
@@ -59,7 +59,7 @@ export const mockDepartmentService = {
         departmentPutDto: DepartmentPutDto,
       ): Promise<DepartmentDto> => {
         if (deptno === 999) {
-          return Promise.reject(new DepartmentNotFoundError(deptno));
+          return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
         }
 
         return Promise.resolve({
@@ -78,7 +78,7 @@ export const mockDepartmentService = {
         departmentPatchDto: DepartmentPatchDto,
       ): Promise<DepartmentDto> => {
         if (deptno === 999) {
-          return Promise.reject(new DepartmentNotFoundError(deptno));
+          return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
         }
 
         const baseDepartment = {
@@ -99,7 +99,7 @@ export const mockDepartmentService = {
     .fn()
     .mockImplementation((deptno: number): Promise<void> => {
       if (deptno === 999) {
-        return Promise.reject(new DepartmentNotFoundError(deptno));
+        return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
       }
 
       return Promise.resolve();

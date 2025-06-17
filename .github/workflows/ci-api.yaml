@@ -1,0 +1,45 @@
+name: CI - Api
+
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/api-ci.yaml"
+      - ".github/workflows/lint-api.yaml"
+      - ".github/workflows/test-api.yaml"
+      - ".github/workflows/docker-api.yaml"
+      - "api/**"
+
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+
+jobs:
+  lint:
+    name: API Lint
+    uses: ./.github/workflows/lint-api.yaml
+    secrets: inherit
+
+  test:
+    name: API Test
+    needs: lint
+    uses: ./.github/workflows/test-api.yaml
+    secrets: inherit
+
+  docker:
+    name: Docker Build and Push
+    needs: test
+    uses: ./.github/workflows/docker-api.yaml
+    secrets: inherit
+    with:
+      TAG: ${{ github.sha }}
+
+  npm-build:
+    name: NPM Build
+    needs: test
+    uses: ./.github/workflows/npm-api.yaml
+    secrets: inherit

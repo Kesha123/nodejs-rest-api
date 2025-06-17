@@ -1,5 +1,4 @@
-import { DepartmentEntity } from '../../src/company/entities/department.entity';
-import { EmployeeEntity } from '../../src/company/entities/employee.entity';
+import { DepartmentEntity, EmployeeEntity } from "@kesha123/nodejs-rest-api-datasource";
 
 const mockEmployees: EmployeeEntity[] = [
   {
@@ -10,7 +9,7 @@ const mockEmployees: EmployeeEntity[] = [
     hiredate: new Date('1980-12-17'),
     sal: 800,
     comm: null,
-    dept: 20,
+    dept: { deptno: 20, dname: 'RESEARCH', loc: 'DALLAS' },
   },
   {
     empno: 2,
@@ -20,7 +19,7 @@ const mockEmployees: EmployeeEntity[] = [
     hiredate: new Date('1981-02-20'),
     sal: 1600,
     comm: 300,
-    dept: 30,
+    dept: { deptno: 30, dname: 'SALES', loc: 'CHICAGO' },
   },
   {
     empno: 3,
@@ -30,7 +29,7 @@ const mockEmployees: EmployeeEntity[] = [
     hiredate: new Date('1981-02-22'),
     sal: 1250,
     comm: 500,
-    dept: 30,
+    dept: { deptno: 30, dname: 'SALES', loc: 'CHICAGO' },
   },
 ];
 
@@ -220,7 +219,7 @@ export const resetMocks = () => {
       hiredate: new Date('1980-12-17'),
       sal: 800,
       comm: null,
-      dept: 20,
+      dept: { deptno: 20, dname: 'RESEARCH', loc: 'DALLAS' },
     },
     {
       empno: 2,
@@ -230,7 +229,7 @@ export const resetMocks = () => {
       hiredate: new Date('1981-02-20'),
       sal: 1600,
       comm: 300,
-      dept: 30,
+      dept: { deptno: 30, dname: 'SALES', loc: 'CHICAGO' },
     },
     {
       empno: 3,
@@ -240,7 +239,7 @@ export const resetMocks = () => {
       hiredate: new Date('1981-02-22'),
       sal: 1250,
       comm: 500,
-      dept: 30,
+      dept: { deptno: 30, dname: 'SALES', loc: 'CHICAGO' },
     },
   );
 

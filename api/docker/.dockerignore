@@ -1,0 +1,10 @@
+docker/
+node_modules/
+test/
+dist/
+.gitignore
+README.md
+.eslintrc.js
+.prettierrc
+nestjs-cli.json
+.env

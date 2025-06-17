@@ -1,14 +1,12 @@
 import { InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, EntityManager } from 'typeorm';
 import { Mapper } from '@automapper/core';
-import { DepartmentEntity } from '../entities/department.entity';
-import { Department } from '../models/department.model';
 import { DepartmentCreateDto } from '../dtos/department/department-create.dto';
 import { DepartmentPutDto } from '../dtos/department/department-put.dto';
 import { DepartmentPatchDto } from '../dtos/department/department-patch.dto';
-import { DepartmentNotFoundError } from '../errors/department-not-found.error';
 import { DepartmentDto } from '../dtos/department/department.dto';
+import { DepartmentEntity } from '@kesha123/nodejs-rest-api-datasource';
 
 @Injectable()
 export class DepartmentService {
@@ -20,6 +18,7 @@ export class DepartmentService {
   /**
    * Get department by deptno
    * @param {number} deptno
+   * @throws {NotFoundException} if department is not found
    * @returns {Promise<DepartmentDto>}
    */
   async getDepartment(deptno: number): Promise<DepartmentDto> {
@@ -31,7 +30,10 @@ export class DepartmentService {
             where: { deptno: deptno },
           },
         );
-        if (!department) throw new DepartmentNotFoundError(deptno);
+        if (!department)
+          throw new NotFoundException(
+            `Department with deptno ${deptno} not found`,
+          );
         return this.mapper.mapAsync(
           department,
           DepartmentEntity,
@@ -87,6 +89,7 @@ export class DepartmentService {
    * Update department
    * @param {number} deptno
    * @param {DepartmentPutDto} departmentPutDto
+   * @throws {NotFoundException} if department is not found
    * @returns {Promise<DepartmentDto>}
    */
   async putDepartment(
@@ -99,7 +102,10 @@ export class DepartmentService {
           DepartmentEntity,
           { where: { deptno: deptno } },
         );
-        if (!department) throw new DepartmentNotFoundError(deptno);
+        if (!department)
+          throw new NotFoundException(
+            `Department with deptno ${deptno} not found`,
+          );
         department.dname = departmentPutDto.dname;
         department.loc = departmentPutDto.loc;
         await transactionalEntityManager.update(
@@ -120,7 +126,8 @@ export class DepartmentService {
    * Patch department
    * @param {number} deptno
    * @param {DepartmentPatchDto} departmentPatchDto
-   * @returns {Promise<DepartmentDto>
+   * @throws {NotFoundException} if department is not found
+   * @returns {Promise<DepartmentDto>}
    */
   async patchDepartment(
     deptno: number,
@@ -132,7 +139,10 @@ export class DepartmentService {
           DepartmentEntity,
           { where: { deptno: deptno } },
         );
-        if (!department) throw new DepartmentNotFoundError(deptno);
+        if (!department)
+          throw new NotFoundException(
+            `Department with deptno ${deptno} not found`,
+          );
         department.dname = departmentPatchDto.dname ?? department.dname;
         department.loc = departmentPatchDto.loc ?? department.loc;
         await transactionalEntityManager.update(
@@ -160,8 +170,13 @@ export class DepartmentService {
           DepartmentEntity,
           { where: { deptno: deptno } },
         );
-        if (!department) throw new DepartmentNotFoundError(deptno);
-        await transactionalEntityManager.delete(Department, { deptno: deptno });
+        if (!department)
+          throw new NotFoundException(
+            `Department with deptno ${deptno} not found`,
+          );
+        await transactionalEntityManager.delete(DepartmentEntity, {
+          deptno: deptno,
+        });
       },
     );
   }

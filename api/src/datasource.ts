@@ -1,7 +1,10 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { join } from 'path';
 import { config } from 'dotenv';
+import {
+  EmployeeEntity,
+  DepartmentEntity,
+} from '@kesha123/nodejs-rest-api-datasource';
 
 config();
 
@@ -16,8 +19,13 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   database: configService.get<string>('POSTGRES_DB'),
   synchronize: false,
   logging: false,
-  entities: [join(__dirname, 'company/entities', '*.entity.{ts,js}')],
-  migrations: [join(__dirname, 'migrations', '**', '*.ts')],
+  entities: [EmployeeEntity, DepartmentEntity],
+  ssl: {
+    rejectUnauthorized: false,
+    ca: process.env.CA,
+    key: process.env.KEY,
+    cert: process.env.CERT,
+  },
 });
 
 export const ApiDataSource = new DataSource(getDataSourceOptions());

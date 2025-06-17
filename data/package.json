@@ -1,0 +1,36 @@
+{
+  "name": "@kesha123/nodejs-rest-api-datasource",
+  "version": "1.0.5",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@types/node": "^24.0.3",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "globals": "^16.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "dependencies": {
+    "pg": "^8.16.0",
+    "typeorm": "^0.3.24"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "npx eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "jest --config jest.config.ts",
+    "migrations:run": "typeorm-ts-node-commonjs migration:run -d src/datasource.ts",
+    "migrations:generate": "typeorm-ts-node-commonjs -d src/datasource.ts migration:generate",
+    "migrations:create": "typeorm-ts-node-commonjs -d src/datasource.ts migration:create",
+    "migrations:revert": "typeorm-ts-node-commonjs migration:revert -d src/datasource.ts"
+  }
+}
