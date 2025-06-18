@@ -3,7 +3,7 @@ version: "3.8"
 
 services:
   postgres:
-    image: ghcr.io/kesha123/nodejs-rest-api/postgres:${DATABASE_IMAGE_TAG:-latest}
+    image: postgres:${DATABASE_IMAGE_TAG:-latest}
     container_name: postgres
     command: >
       -c ssl=on
@@ -26,20 +26,10 @@ services:
       timeout: 5s
       retries: 5
 
-  migrations:
-    image: ghcr.io/kesha123/nodejs-rest-api/migrations:${MIGRATIONS_IMAGE_TAG:-latest}
-    env_file:
-      - .env
-    depends_on:
-      - postgres
-
 
 networks:
   nodejs-rest-api:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
 
 
 volumes:

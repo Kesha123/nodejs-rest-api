@@ -14,9 +14,9 @@ build-api-docker-image:
 
 .PHONY: build-migrations-docker-image
 build-migrations-docker-image:
-	docker build -t ghcr.io/kesha123/nodejs-rest-api/migrations:$(MIGRATIONS_IMAGE_TAG) +
-	-f ./data/docker/Dockerfile \
-	./data
+	docker build -t ghcr.io/kesha123/nodejs-rest-api/migrations:$(MIGRATIONS_IMAGE_TAG) \
+		-f ./data/docker/Dockerfile \
+		./data
 
 
 .PHONY: generate-tls-certificates
@@ -27,25 +27,26 @@ generate-tls-certificates:
 	openssl req -new -text -passout pass:${PASSPHRASE} -subj /CN=${COMMON_NAME} -out ${SSL_DIR}/server.req -keyout ${SSL_DIR}/privkey.pem
 	openssl rsa -in ${SSL_DIR}/privkey.pem -passin pass:${PASSPHRASE} -out ${SSL_DIR}/server.key
 	openssl req -x509 -in ${SSL_DIR}/server.req -text -key ${SSL_DIR}/server.key -out ${SSL_DIR}/server.crt
+	@cp ${SSL_DIR}/server.key ${SSL_DIR}/server.key.bak
+	@sudo chown 999:999 ${SSL_DIR}/server.key
 	@sudo chmod 600 ${SSL_DIR}/server.key
-
-
-.PHONY: export-tls-certificates-to-env
-export-tls-certificates-to-env:
-	@echo "Exporting TLS certificates to environment variables..."
-	@mkdir -p $(shell pwd)/infrastructure/docker
-	@echo "SSL_CERTIFICATE=$(shell cat $(SSL_DIR)/server.crt)" >> $(shell pwd)/infrastructure/docker/.env
-	@echo "SSL_KEY=$(shell cat $(SSL_DIR)/server.key)" >> $(shell pwd)/infrastructure/docker/.env
-	@echo "SSL_CA=$(shell cat $(SSL_DIR)/server.crt)" >> $(shell pwd)/infrastructure/docker/.env
 
 
 .PHONY: database-start-local
 database-start-local:
-	docker compose -f ./infrastructure/docker/docker-compose.database.yml up -d
-	docker exec -t nodejs-rest-api_postgres sh -c "psql -U postgres -d postgres -f /opt/sql/insert.sql"
+	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yml up -d
+	docker run \
+		-ti \
+		--rm \
+		--env-file $(shell pwd)/infrastructure/docker/.env \
+		--network docker_nodejs-rest-api  \
+		--volume $(shell pwd)/infrastructure/docker/ssl/privkey.pem:/migrations/ssl/privkey.pem \
+		--volume $(shell pwd)/infrastructure/docker/ssl/server.crt:/migrations/ssl/server.crt \
+		--volume $(shell pwd)/infrastructure/docker/ssl/server.key.bak:/migrations/ssl/server.key \
+		ghcr.io/kesha123/nodejs-rest-api/migrations:${MIGRATIONS_IMAGE_TAG}
+	docker exec postgres sh -c "psql -U postgres -d postgres -f /opt/sql/insert.sql"
 
 
 .PHONY: api-start-local
 api-start-local:
-	docker compose -f ./infrastructure/docker/docker-compose.yml up -d
-	docker exec -t nodejs-rest-api_postgres sh -c "psql -U postgres -d postgres -f /opt/sql/insert.sql"
+	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml up -d

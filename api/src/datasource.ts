@@ -5,6 +5,8 @@ import {
   EmployeeEntity,
   DepartmentEntity,
 } from '@kesha123/nodejs-rest-api-datasource';
+import * as fs from 'fs';
+import { join } from 'path';
 
 config();
 
@@ -22,9 +24,9 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   entities: [EmployeeEntity, DepartmentEntity],
   ssl: {
     rejectUnauthorized: false,
-    ca: process.env.SSL_CA,
-    key: process.env.SSL_KEY,
-    cert: process.env.SSL_CERTIFICATE,
+    ca: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
+    key: fs.readFileSync(join(__dirname, '../ssl/server.key')).toString(),
+    cert: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
   },
 });
 

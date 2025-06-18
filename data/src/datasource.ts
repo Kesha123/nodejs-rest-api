@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import { config } from 'dotenv';
+import * as fs from 'fs';
 
 config();
 
@@ -17,9 +18,9 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   migrations: [join(__dirname, './migrations', '**', '*.ts')],
   ssl: {
     rejectUnauthorized: false,
-    ca: process.env.SSL_CA,
-    key: process.env.SSL_KEY,
-    cert: process.env.SSL_CERTIFICATE,
+    ca: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
+    key: fs.readFileSync(join(__dirname, '../ssl/server.key')).toString(),
+    cert: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
   },
 });
 
