@@ -2,16 +2,21 @@ API_IMAGE_TAG 			?= latest
 MIGRATIONS_IMAGE_TAG 	?= latest
 SSL_DIR                 ?= $(shell pwd)/infrastructure/docker/ssl
 COMMON_NAME             ?= localhost
-
+GITHUB_TOKEN			?= ${GITHUB_TOKEN}
 
 .PHONY: build-api-docker-image
 build-api-docker-image:
-	docker build -t ghcr.io/kesha123/nodejs-rest-api/api:$(API_IMAGE_TAG) -f ./api/docker/Dockerfile ./api
+	docker build -t ghcr.io/kesha123/nodejs-rest-api/api:$(API_IMAGE_TAG) \
+		--build-arg GITHUB_TOKEN=${GITHUB_TOKEN} \
+		-f ./api/docker/Dockerfile \
+		./api
 
 
 .PHONY: build-migrations-docker-image
 build-migrations-docker-image:
-	docker build -t ghcr.io/kesha123/nodejs-rest-api/migrations:$(MIGRATIONS_IMAGE_TAG) -f ./data/docker/Dockerfile ./data
+	docker build -t ghcr.io/kesha123/nodejs-rest-api/migrations:$(MIGRATIONS_IMAGE_TAG) +
+	-f ./data/docker/Dockerfile \
+	./data
 
 
 .PHONY: generate-tls-certificates

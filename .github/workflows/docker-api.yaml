@@ -70,6 +70,8 @@ jobs:
         platforms: ${{ matrix.platform }}
         labels: ${{ steps.meta.outputs.labels }}
         outputs: type=image,"name=${{ env.IMAGE_REPOSITORY }}",push=true
+        build-args: |
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         tags: |
           ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ inputs.TAG }}
