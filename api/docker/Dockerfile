@@ -1,9 +1,13 @@
-FROM node:20-alpine as build
+ARG GITHUB_TOKEN
+
+FROM node:20-alpine AS build
 WORKDIR /app
-COPY package*.json .
-RUN npm install
+COPY package*.json ./
+RUN echo "registry=https://registry.npmjs.org/" > .npmrc && \
+    echo "@kesha123:registry=https://npm.pkg.github.com/" >> .npmrc && \
+    echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc && \
+    npm install
 COPY . .
-RUN npm run build
 
 FROM node:20-alpine
 WORKDIR /app
