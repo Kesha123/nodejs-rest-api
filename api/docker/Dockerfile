@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN echo "registry=https://registry.npmjs.org/" > .npmrc && \
     echo "@kesha123:registry=https://npm.pkg.github.com/" >> .npmrc && \
     echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
-RUN npm install --omit=dev
+RUN npm install
 COPY . .
 RUN npm run build
 
