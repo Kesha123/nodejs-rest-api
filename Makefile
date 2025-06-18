@@ -34,7 +34,7 @@ generate-tls-certificates:
 
 .PHONY: database-start-local
 database-start-local:
-	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yml up -d
+	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yaml up -d
 	docker run \
 		-ti \
 		--rm \

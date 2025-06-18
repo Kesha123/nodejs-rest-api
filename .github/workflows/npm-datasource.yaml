@@ -53,3 +53,8 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup
+        continue-on-error: true
+        run: |
+          echo "Cleaning up..."
