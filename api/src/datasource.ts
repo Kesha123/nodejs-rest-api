@@ -22,9 +22,9 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   entities: [EmployeeEntity, DepartmentEntity],
   ssl: {
     rejectUnauthorized: false,
-    ca: process.env.CA,
-    key: process.env.KEY,
-    cert: process.env.CERT,
+    ca: process.env.SSL_CA,
+    key: process.env.SSL_KEY,
+    cert: process.env.SSL_CERTIFICATE,
   },
 });
 

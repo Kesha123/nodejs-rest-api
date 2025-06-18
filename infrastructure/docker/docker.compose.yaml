@@ -1,0 +1,31 @@
+version: "3.8"
+
+
+include:
+  - docker-compose.database.yaml
+
+
+services:
+  nginx-proxy:
+    image: ghcr.io/kesha123/nodejs-rest-api/nginx-proxy:${NGINX_PROXY_IMAGE_TAG:-stable-alpine3.21}
+    container_name: nginx-proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - nodejs-rest-api
+    ports:
+      - 8080:80
+      - 4430:443
+    depends_on:
+      - api
+
+  api:
+    image: ghcr.io/kesha123/nodejs-rest-api/api:${API_IMAGE_TAG:-latest}
+    container_name: api
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - migrations
+    networks:
+      - nodejs-rest-api
