@@ -30,8 +30,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Create .npmrc for multiple registries
+        run: |
+          echo "registry=https://registry.npmjs.org/" > .npmrc
+          echo "@kesha123:registry=https://npm.pkg.github.com/" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
       - name: Install dependencies
         run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: npm test
