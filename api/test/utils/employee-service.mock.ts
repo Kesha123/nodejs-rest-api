@@ -9,7 +9,9 @@ export const mockEmployeeService = {
     .fn()
     .mockImplementation((empno: number): Promise<EmployeeDto> => {
       if (empno === 999) {
-        return Promise.reject(new NotFoundException(`Employee with empno ${empno} not found`));
+        return Promise.reject(
+          new NotFoundException(`Employee with empno ${empno} not found`),
+        );
       }
 
       return Promise.resolve({
@@ -61,7 +63,11 @@ export const mockEmployeeService = {
           hiredate: employeeCreateDto.hiredate,
           sal: employeeCreateDto.sal,
           comm: employeeCreateDto.comm,
-          dept: { deptno: employeeCreateDto.dept, dname: 'RESEARCH', loc: 'DALLAS' },
+          dept: {
+            deptno: employeeCreateDto.dept,
+            dname: 'RESEARCH',
+            loc: 'DALLAS',
+          },
         });
       },
     ),
@@ -71,7 +77,9 @@ export const mockEmployeeService = {
     .mockImplementation(
       (empno: number, employeePutDto: EmployeePutDto): Promise<EmployeeDto> => {
         if (empno === 999) {
-          return Promise.reject(new NotFoundException(`Employee with empno ${empno} not found`));
+          return Promise.reject(
+            new NotFoundException(`Employee with empno ${empno} not found`),
+          );
         }
 
         return Promise.resolve({
@@ -82,7 +90,11 @@ export const mockEmployeeService = {
           hiredate: new Date(employeePutDto.hiredate),
           sal: employeePutDto.sal,
           comm: employeePutDto.comm,
-          dept: { deptno: employeePutDto.dept, dname: 'RESEARCH', loc: 'DALLAS' },
+          dept: {
+            deptno: employeePutDto.dept,
+            dname: 'RESEARCH',
+            loc: 'DALLAS',
+          },
         });
       },
     ),
@@ -95,7 +107,9 @@ export const mockEmployeeService = {
         employeePatchDto: EmployeePatchDto,
       ): Promise<EmployeeDto> => {
         if (empno === 999) {
-          return Promise.reject(new NotFoundException(`Employee with empno ${empno} not found`));
+          return Promise.reject(
+            new NotFoundException(`Employee with empno ${empno} not found`),
+          );
         }
 
         const baseEmployee = {
@@ -115,7 +129,11 @@ export const mockEmployeeService = {
           mgr: employeePatchDto.mgr ?? baseEmployee.mgr,
           sal: employeePatchDto.sal ?? baseEmployee.sal,
           comm: employeePatchDto.comm ?? baseEmployee.comm,
-          dept: { deptno: employeePatchDto.dept, dname: 'RESEARCH', loc: 'DALLAS' },
+          dept: {
+            deptno: employeePatchDto.dept,
+            dname: 'RESEARCH',
+            loc: 'DALLAS',
+          },
         });
       },
     ),
@@ -124,7 +142,9 @@ export const mockEmployeeService = {
     .fn()
     .mockImplementation((empno: number): Promise<void> => {
       if (empno === 999) {
-        return Promise.reject(new NotFoundException(`Employee with empno ${empno} not found`));
+        return Promise.reject(
+          new NotFoundException(`Employee with empno ${empno} not found`),
+        );
       }
 
       return Promise.resolve();

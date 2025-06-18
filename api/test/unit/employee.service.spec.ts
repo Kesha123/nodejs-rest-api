@@ -51,9 +51,7 @@ describe('EmployeeService', () => {
     });
 
     it('should throw NotFoundException if employee not found', async () => {
-      await expect(service.getEmployee(999)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(service.getEmployee(999)).rejects.toThrow(NotFoundException);
       expect(mockEntityManager.findOne).toHaveBeenCalledWith(
         expect.anything(),
         {

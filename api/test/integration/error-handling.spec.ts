@@ -1,5 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import {
+  HttpStatus,
+  INestApplication,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import * as request from 'supertest';
 import { EmployeeController } from '../../src/company/controllers/employee.controller';
 import { DepartmentController } from '../../src/company/controllers/department.controller';

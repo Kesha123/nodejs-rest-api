@@ -1,4 +1,7 @@
-import { DepartmentEntity, EmployeeEntity } from "@kesha123/nodejs-rest-api-datasource";
+import {
+  DepartmentEntity,
+  EmployeeEntity,
+} from '@kesha123/nodejs-rest-api-datasource';
 
 const mockEmployees: EmployeeEntity[] = [
   {

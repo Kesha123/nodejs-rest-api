@@ -9,7 +9,9 @@ export const mockDepartmentService = {
     .fn()
     .mockImplementation((deptno: number): Promise<DepartmentDto> => {
       if (deptno === 999) {
-        return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
+        return Promise.reject(
+          new NotFoundException(`Department with deptno ${deptno} not found`),
+        );
       }
 
       return Promise.resolve({
@@ -59,7 +61,9 @@ export const mockDepartmentService = {
         departmentPutDto: DepartmentPutDto,
       ): Promise<DepartmentDto> => {
         if (deptno === 999) {
-          return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
+          return Promise.reject(
+            new NotFoundException(`Department with deptno ${deptno} not found`),
+          );
         }
 
         return Promise.resolve({
@@ -78,7 +82,9 @@ export const mockDepartmentService = {
         departmentPatchDto: DepartmentPatchDto,
       ): Promise<DepartmentDto> => {
         if (deptno === 999) {
-          return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
+          return Promise.reject(
+            new NotFoundException(`Department with deptno ${deptno} not found`),
+          );
         }
 
         const baseDepartment = {
@@ -99,7 +105,9 @@ export const mockDepartmentService = {
     .fn()
     .mockImplementation((deptno: number): Promise<void> => {
       if (deptno === 999) {
-        return Promise.reject(new NotFoundException(`Department with deptno ${deptno} not found`));
+        return Promise.reject(
+          new NotFoundException(`Department with deptno ${deptno} not found`),
+        );
       }
 
       return Promise.resolve();
