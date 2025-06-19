@@ -1,0 +1,29 @@
+name: Cloud Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/cloud-deploy.yaml"
+      - ".github/workflows/aws-infra-deploy.yaml"
+      - ".github/workflows/lint-iac.yaml"
+      - "infrastructure/cloud/**"
+
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+
+jobs:
+  lint-iac:
+    name: IaC Lint
+    uses: ./.github/workflows/lint-iac.yaml
+    secrets: inherit
+
+  aws-infra-deploy:
+    name: AWS Infrastructure Deploy
+    needs: lint-iac
+    uses: ./.github/workflows/aws-infra-deploy.yaml
+    secrets: inherit
