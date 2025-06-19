@@ -25,3 +25,29 @@ https://nodejs-rest-api.innokentii-kozlov.com/api - API Swagger Documentation.
  - [x] GitHub Actions
  - [x] Postgres & TypeOrm
  - [x] Jest
+
+## Getting Started
+
+These instructions show how to run the database and API locally using Docker. Make sure you have [Docker](https://www.docker.com/) and [Make](https://www.gnu.org/software/make/) installed.
+
+### 1. Generate TLS certificates
+
+```bash
+make generate-tls-certificates
+```
+
+### 2. Start the database
+
+This command starts a PostgreSQL container and runs the initial migrations.
+
+```bash
+make database-start-local
+```
+
+### 3. Start the API
+
+```bash
+make api-start-local
+```
+
+The API will be available at `https://localhost:4430` by default.
