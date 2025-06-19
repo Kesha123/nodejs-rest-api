@@ -2,7 +2,9 @@
 
 ![CI - Api](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/ci-api.yaml/badge.svg)
 ![CI - Datasource](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/ci-datasource.yaml/badge.svg)
-![K8S Deployment](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/k8s-deployment.yaml/badge.svg)
+
+![K8S Deployment](https://img.shields.io/badge/Kubernetes-3069DE?style=for-the-badge&logo=kubernetes&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
 # Table of Contents
 - [Description](#description)
@@ -19,10 +21,12 @@ https://nodejs-rest-api.innokentii-kozlov.com - API endpoint.
 https://nodejs-rest-api.innokentii-kozlov.com/api - API Swagger Documentation.
 
 # Stack
- - [x] TypeScript & NestJs
+ - [x] AWS
  - [x] Docker
  - [x] Kubernetes
+ - [x] Argo CD
  - [x] GitHub Actions
+ - [x] TypeScript & NestJs
  - [x] Postgres & TypeOrm
  - [x] Jest
 

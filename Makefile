@@ -50,3 +50,8 @@ database-start-local:
 .PHONY: api-start-local
 api-start-local:
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml up -d
+
+.PHONY: stack-stop-local
+stack-stop-local:
+	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yaml down
+	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml down
