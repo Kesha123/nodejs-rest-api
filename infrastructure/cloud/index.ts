@@ -77,7 +77,7 @@ const prodSg = createProdSg(projectConfig.project_name, 'prod-sg', {
   },
 });
 
-const kubernetesNode = new aws.ec2.Instance(
+const node = new aws.ec2.Instance(
   `${projectConfig.project_name}-kubernetes-node`,
   {
     ami: projectConfig.ami,
@@ -86,12 +86,21 @@ const kubernetesNode = new aws.ec2.Instance(
     associatePublicIpAddress: true,
     vpcSecurityGroupIds: [stageSg.id, prodSg.id],
     keyName: keyPair.keyName,
-    userData: `
-    #!/bin/bash
-    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
-    sudo dpkg -i minikube_latest_amd64.deb
-    minikube addons enable ingress
-  `,
+    userData: pulumi.interpolate`#!/bin/bash
+      echo "Installing Docker..."
+      curl -fsSL https://get.docker.com -o get-docker.sh
+      sh get-docker.sh
+      sudo usermod -aG docker $USER
+      newgrp docker
+      rm get-docker.sh
+
+      echo "Installing Minikube..."
+      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+      sudo dpkg -i minikube_latest_amd64.deb
+      minikube start --driver=docker
+      minikube addons enable ingress
+
+      `,
     tags: {
       ...projectConfig.tags,
       Name: `${projectConfig.project_name}-kubernetes-node`,
@@ -108,7 +117,7 @@ new aws.route53.Record(`${projectConfig.project_name}-a-record`, {
   name: projectConfig.project_domain,
   type: aws.route53.RecordType.A,
   ttl: 30,
-  records: [kubernetesNode.publicIp],
+  records: [node.publicIp],
 });
 
 export const resources = {
@@ -116,5 +125,5 @@ export const resources = {
     privateKey: privateKey.privateKeyOpenssh,
     publicKey: privateKey.publicKeyOpenssh,
   },
-  nodeIp: kubernetesNode.publicIp,
+  nodeIp: node.publicIp,
 };

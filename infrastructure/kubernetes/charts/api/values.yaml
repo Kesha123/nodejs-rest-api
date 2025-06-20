@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/kesha123/nodejs-rest-api/api
+  tag: b44e2d404186bab1789d0b5cee39f7bc38897293
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  host: nodejs-rest-api.innokentii-kozlov.com
+  tls:
+   - secretName: nodejs-rest-api-tls
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+migrations:
+  image:
+    repository: ghcr.io/kesha123/nodejs-rest-api/migrations
+    tag: b44e2d404186bab1789d0b5cee39f7bc38897293
+  envSecretName: postgres-credentials
+  sslSecretName: migrations-ssl-certs

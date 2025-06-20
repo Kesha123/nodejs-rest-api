@@ -32,9 +32,13 @@ generate-tls-certificates:
 	@sudo chmod 600 ${SSL_DIR}/server.key
 
 
-.PHONY: database-start-local
-database-start-local:
+.PHONY: database-start
+database-start:
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yaml up -d
+
+
+.PHONY: run-migrations
+run-migrations:
 	docker run \
 		-ti \
 		--rm \
@@ -44,14 +48,19 @@ database-start-local:
 		--volume $(shell pwd)/infrastructure/docker/ssl/server.crt:/migrations/ssl/server.crt \
 		--volume $(shell pwd)/infrastructure/docker/ssl/server.key.bak:/migrations/ssl/server.key \
 		ghcr.io/kesha123/nodejs-rest-api/migrations:${MIGRATIONS_IMAGE_TAG}
+
+
+.PHONY: insert-data
+insert-data:
 	docker exec postgres sh -c "psql -U postgres -d postgres -f /opt/sql/insert.sql"
 
 
-.PHONY: api-start-local
-api-start-local:
+.PHONY: api-start
+api-start:
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml up -d
 
-.PHONY: stack-stop-local
-stack-stop-local:
+
+.PHONY: stack-stop
+stack-stop:
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yaml down
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml down

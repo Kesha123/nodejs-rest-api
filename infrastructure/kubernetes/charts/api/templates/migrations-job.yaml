@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "api.fullname" . }}-migrations
+  labels:
+    app: {{ include "api.name" . }}
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrations
+          image: "{{ .Values.migrations.image.repository }}:{{ .Values.migrations.image.tag }}"
+          envFrom:
+            - secretRef:
+                name: {{ .Values.migrations.envSecretName }}
+          volumeMounts:
+            - name: ssl-certs
+              mountPath: /migrations/ssl
+              readOnly: true
+      volumes:
+        - name: ssl-certs
+          secret:
+            secretName: {{ .Values.migrations.sslSecretName }}

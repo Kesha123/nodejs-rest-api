@@ -22,8 +22,8 @@ jobs:
     uses: ./.github/workflows/lint-iac.yaml
     secrets: inherit
 
-  aws-infra-deploy:
-    name: AWS Infrastructure Deploy
-    needs: lint-iac
-    uses: ./.github/workflows/aws-infra-deploy.yaml
-    secrets: inherit
+  # aws-infra-deploy:
+  #   name: AWS Infrastructure Deploy
+  #   needs: lint-iac
+  #   uses: ./.github/workflows/aws-infra-deploy.yaml
+  #   secrets: inherit
