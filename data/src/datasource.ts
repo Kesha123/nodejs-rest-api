@@ -19,8 +19,8 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   ssl: {
     rejectUnauthorized: false,
     ca: fs.readFileSync(join(__dirname, '../ssl/ca.crt')).toString(),
-    key: fs.readFileSync(join(__dirname, '../ssl/server.key')).toString(),
-    cert: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
+    // key: fs.readFileSync(join(__dirname, '../ssl/server.key')).toString(),
+    // cert: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
   },
 });
 
