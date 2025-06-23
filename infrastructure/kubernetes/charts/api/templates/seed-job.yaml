@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.api.name }}-seed
+  namespace: {{ .Values.namespace | default "nodejs-rest-api" }}
+  labels:
+    app: {{ .Values.api.name }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "1"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded,hook-failed
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: seed
+        image: {{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}
+        env:
+        - name: DATABASE_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres-cluster-app
+              key: host
+        - name: POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              name: postgres-cluster-app
+              key: port
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-cluster-app
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-cluster-app
+              key: password
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-cluster-app
+              key: dbname
+        command:
+        - sh
+        - -c
+        - |
+          PGPASSWORD="$POSTGRES_PASSWORD" \
+          psql \
+            --host="$DATABASE_HOST" \
+            --port="$POSTGRES_PORT" \
+            --username="$POSTGRES_USER" \
+            --dbname="$POSTGRES_DB" \
+            --file=/sql/insert.sql
+        volumeMounts:
+        - name: seed-sql
+          mountPath: /sql
+      volumes:
+      - name: seed-sql
+        configMap:
+          name: {{ .Values.api.name }}-seed-sql

@@ -1,9 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "api.fullname" . }}-migrations
+  name: {{ .Values.api.name }}-migrations
+  namespace: {{ .Values.namespace | default "nodejs-rest-api" }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: hook-succeeded
   labels:
-    app: {{ include "api.name" . }}
+    app: {{ .Values.api.name }}
 spec:
   template:
     spec:
@@ -11,35 +16,42 @@ spec:
       containers:
         - name: migrations
           image: {{ .Values.migrations.image.repository }}:{{ .Values.migrations.image.tag }}
-        envFrom:
-        - secretRef:
-            name: nodejs-api-postgres-cluster-app
-        env:
-        - name: DATABASE_HOST
-          value: "$(hostname)"
-        - name: POSTGRES_PORT
-          value: "$(port)"
-        - name: POSTGRES_USER
-          value: "$(username)"
-        - name: POSTGRES_PASSWORD
-          value: "$(password)"
-        - name: POSTGRES_DB
-          value: "$(database)"
+          env:
+          - name: DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: postgres-cluster-app
+                key: host
+          - name: POSTGRES_PORT
+            valueFrom:
+              secretKeyRef:
+                name: postgres-cluster-app
+                key: port
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-cluster-app
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-cluster-app
+                key: password
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: postgres-cluster-app
+                key: dbname
           volumeMounts:
-            - name: ssl-certs
-              mountPath: /migrations/ssl
-              readOnly: true
-      volumes:
-        - name: ssl-certs
-          secret:
-            secretName: {{ .Values.migrations.sslSecretName }}
+          - name: postgres-ssl
+            mountPath: /migrations/ssl
+            readOnly: true
       volumes:
         - name: postgres-ssl
-          secretName: nodejs-api-postgres-cluster-ca
-          items:
-            - key: ca.crt
-              path: ca.crt
-            - key: tls.crt
-              path: server.crt
-            - key: tls.key
-              path: server.key
+          projected:
+            sources:
+              - secret:
+                  name: postgres-cluster-ca
+                  items:
+                    - key: ca.crt
+                      path: ca.crt

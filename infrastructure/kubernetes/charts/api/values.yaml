@@ -1,10 +1,13 @@
 replicaCount: 1
 
 namespace: nodejs-rest-api
+name: nodejs-rest-api
 
-image:
-  repository: ghcr.io/kesha123/nodejs-rest-api/api
-  tag: latest
+api:
+  image:
+    repository: ghcr.io/kesha123/nodejs-rest-api/api
+    tag: 8d5f6b1e15bfb53f32a96a3ebf8af777047c35f5
+  name: api
 
 service:
   type: ClusterIP
@@ -28,15 +31,14 @@ resources:
 migrations:
   image:
     repository: ghcr.io/kesha123/nodejs-rest-api/migrations
-    tag: latest
-  envSecretName: postgres-credentials
-  sslSecretName: migrations-ssl-certs
+    tag: 8d5f6b1e15bfb53f32a96a3ebf8af777047c35f5
+  name: migrations
 
 postgres:
   clusterName: postgres-cluster
   image:
-    repository: ghcr.io/cloudnative-pg/cloudnative-pg
-    tag: 1.26.0
+    repository: ghcr.io/cloudnative-pg/postgresql
+    tag: 17.5
   storage:
     size: 2Gi
     storageClass: standard

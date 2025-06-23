@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "api.fullname" . }}
+  name: {{ .Values.api.name }}-ingress
   labels:
-    app: {{ include "api.name" . }}
+    app: {{ .Values.api.name }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/router.tls: "true"
@@ -16,7 +16,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "api.fullname" . }}
+                name: {{ .Values.api.name }}-service
                 port:
                   number: {{ .Values.service.port | default 80 }}
   tls:

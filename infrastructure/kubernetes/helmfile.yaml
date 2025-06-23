@@ -13,6 +13,9 @@ releases:
     namespace: cert-manager
     chart: jetstack/cert-manager
     version: v1.18.1
+    set:
+      - name: installCRDs
+        value: "true"
   - name: traefik
     namespace: traefik
     chart: traefik/traefik
