@@ -24,7 +24,7 @@ export const getDataSourceOptions = (): DataSourceOptions => ({
   entities: [EmployeeEntity, DepartmentEntity],
   ssl: {
     rejectUnauthorized: false,
-    ca: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
+    ca: fs.readFileSync(join(__dirname, '../ssl/ca.crt')).toString(),
     key: fs.readFileSync(join(__dirname, '../ssl/server.key')).toString(),
     cert: fs.readFileSync(join(__dirname, '../ssl/server.crt')).toString(),
   },
