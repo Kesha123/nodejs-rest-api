@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}
+  namespace: {{ .Values.namespace | default "nodejs-rest-api" }}
+spec:
+  instances: {{ .Values.postgres.replicaCount | default 1 }}
+  imageName: {{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}
+  storage:
+    size: {{ .Values.postgres.storage.size | default "2Gi" }}
+    storageClass: {{ .Values.postgres.storage.storageClass | default "standard" }}

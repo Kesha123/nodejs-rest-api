@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "api.fullname" . }}
+  namespace: {{ .Values.namespace | default "nodejs-rest-api" }}
   labels:
     app: {{ include "api.name" . }}
 spec:
@@ -19,5 +20,33 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: nodejs-api-postgres-cluster-app
+        env:
+        - name: DATABASE_HOST
+          value: "$(hostname)"
+        - name: POSTGRES_PORT
+          value: "$(port)"
+        - name: POSTGRES_USER
+          value: "$(username)"
+        - name: POSTGRES_PASSWORD
+          value: "$(password)"
+        - name: POSTGRES_DB
+          value: "$(database)"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+          - name: postgres-ssl
+            mountPath: /app/ssl
+            readOnly: true
+      volumes:
+        - name: postgres-ssl
+          secretName: nodejs-api-postgres-cluster-ca
+          items:
+            - key: ca.crt
+              path: ca.crt
+            - key: tls.crt
+              path: server.crt
+            - key: tls.key
+              path: server.key
