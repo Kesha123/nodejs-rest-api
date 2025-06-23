@@ -27,9 +27,28 @@ generate-tls-certificates:
 	openssl req -new -text -passout pass:${PASSPHRASE} -subj /CN=${COMMON_NAME} -out ${SSL_DIR}/server.req -keyout ${SSL_DIR}/privkey.pem
 	openssl rsa -in ${SSL_DIR}/privkey.pem -passin pass:${PASSPHRASE} -out ${SSL_DIR}/server.key
 	openssl req -x509 -in ${SSL_DIR}/server.req -text -key ${SSL_DIR}/server.key -out ${SSL_DIR}/server.crt
+	@cp ${SSL_DIR}/server.crt ${SSL_DIR}/ca.crt
 	@cp ${SSL_DIR}/server.key ${SSL_DIR}/server.key.bak
 	@sudo chown 999:999 ${SSL_DIR}/server.key
 	@sudo chmod 600 ${SSL_DIR}/server.key
+
+
+.PHONY: copy-tls-certificates-api-service
+copy-tls-certificates-api-service:
+	@echo "Copying TLS certificates to API service..."
+	@mkdir -p $(shell pwd)/api/ssl
+	@cp $(SSL_DIR)/server.crt $(shell pwd)/api/ssl/server.crt
+	@cp $(SSL_DIR)/server.key.bak $(shell pwd)/api/ssl/server.key
+	@cp $(SSL_DIR)/ca.crt $(shell pwd)/api/ssl/ca.crt
+
+
+.PHONY: copy-tls-certificates-migrations-service
+copy-tls-certificates-migrations-service:
+	@echo "Copying TLS certificates to migrations service..."
+	@mkdir -p $(shell pwd)/data/ssl
+	@cp $(SSL_DIR)/server.crt $(shell pwd)/data/ssl/server.crt
+	@cp $(SSL_DIR)/server.key.bak $(shell pwd)/data/ssl/server.key
+	@cp $(SSL_DIR)/ca.crt $(shell pwd)/data/ssl/ca.crt
 
 
 .PHONY: database-start
@@ -64,3 +83,8 @@ api-start:
 stack-stop:
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.database.yaml down
 	docker compose -f $(shell pwd)/infrastructure/docker/docker-compose.yaml down
+
+
+.PHONY: get-pulumi-output
+get-pulumi-output:
+	pulumi stack output --show-secrets
