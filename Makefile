@@ -63,9 +63,10 @@ run-migrations:
 		--rm \
 		--env-file $(shell pwd)/infrastructure/docker/.env \
 		--network docker_nodejs-rest-api  \
-		--volume $(shell pwd)/infrastructure/docker/ssl/privkey.pem:/migrations/ssl/privkey.pem \
-		--volume $(shell pwd)/infrastructure/docker/ssl/server.crt:/migrations/ssl/server.crt \
-		--volume $(shell pwd)/infrastructure/docker/ssl/server.key.bak:/migrations/ssl/server.key \
+		--volume $(shell pwd)/infrastructure/docker/ssl/ca.crt:/migrations/ssl/ca.crt \
+		# --volume $(shell pwd)/infrastructure/docker/ssl/privkey.pem:/migrations/ssl/privkey.pem \
+		# --volume $(shell pwd)/infrastructure/docker/ssl/server.crt:/migrations/ssl/server.crt \
+		# --volume $(shell pwd)/infrastructure/docker/ssl/server.key.bak:/migrations/ssl/server.key \
 		ghcr.io/kesha123/nodejs-rest-api/migrations:${MIGRATIONS_IMAGE_TAG}
 
 

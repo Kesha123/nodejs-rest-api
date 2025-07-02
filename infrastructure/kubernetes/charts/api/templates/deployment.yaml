@@ -26,27 +26,27 @@ spec:
           - name: DATABASE_HOST
             valueFrom:
               secretKeyRef:
-                name: postgres-cluster-app
+                name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
                 key: host
           - name: POSTGRES_PORT
             valueFrom:
               secretKeyRef:
-                name: postgres-cluster-app
+                name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
                 key: port
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: postgres-cluster-app
+                name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
                 key: username
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: postgres-cluster-app
+                name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
                 key: password
           - name: POSTGRES_DB
             valueFrom:
               secretKeyRef:
-                name: postgres-cluster-app
+                name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
                 key: dbname
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -59,12 +59,12 @@ spec:
           projected:
             sources:
               - secret:
-                  name: postgres-cluster-ca
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-ca
                   items:
                     - key: ca.crt
                       path: ca.crt
               - secret:
-                  name: postgres-cluster-server
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-server
                   items:
                     - key: tls.crt
                       path: server.crt

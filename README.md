@@ -4,7 +4,6 @@
 ![CI - Datasource](https://github.com/Kesha123/nodejs-rest-api/actions/workflows/ci-datasource.yaml/badge.svg)
 
 ![K8S Deployment](https://img.shields.io/badge/Kubernetes-3069DE?style=for-the-badge&logo=kubernetes&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
 # Table of Contents
 - [Description](#description)
@@ -21,7 +20,6 @@ https://nodejs-rest-api.innokentii-kozlov.com - API endpoint.
 https://nodejs-rest-api.innokentii-kozlov.com/api - API Swagger Documentation.
 
 # Stack
- - [x] AWS
  - [x] Docker
  - [x] Kubernetes
  - [x] Argo CD
@@ -54,4 +52,4 @@ make database-start-local
 make api-start-local
 ```
 
-The API will be available at `https://localhost:4430` by default.
+The API will be available at `https://localhost:3000` by default.

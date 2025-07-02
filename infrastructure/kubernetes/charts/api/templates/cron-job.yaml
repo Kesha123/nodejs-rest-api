@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.api.name }}-cron
+  namespace: {{ .Values.namespace | default "nodejs-rest-api" }}
+  labels:
+    app: {{ .Values.api.name }}
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron
+              image: {{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}
+              env:
+              - name: DATABASE_HOST
+              valueFrom:
+                  secretKeyRef:
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
+                  key: host
+              - name: POSTGRES_PORT
+              valueFrom:
+                  secretKeyRef:
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
+                  key: port
+              - name: POSTGRES_USER
+              valueFrom:
+                  secretKeyRef:
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
+                  key: username
+              - name: POSTGRES_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
+                  key: password
+              - name: POSTGRES_DB
+              valueFrom:
+                  secretKeyRef:
+                  name: {{ .Values.postgres.clusterName | default "postgres-cluster" }}-app
+                  key: dbname
+              command:
+              - sh
+              - -c
+              - |
+                PGPASSWORD="$POSTGRES_PASSWORD" \
+                psql \
+                  --host="$DATABASE_HOST" \
+                  --port="$POSTGRES_PORT" \
+                  --username="$POSTGRES_USER" \
+                  --dbname="$POSTGRES_DB" \
+                  --file=/sql/insert.sql
+              volumeMounts:
+              - name: seed-sql
+                mountPath: /sql
+          volumes:
+          - name: seed-sql
+            configMap:
+              name: {{ .Values.api.name }}-seed-sql

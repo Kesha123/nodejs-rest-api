@@ -19,9 +19,10 @@ services:
     image: ghcr.io/kesha123/nodejs-rest-api/api:${API_IMAGE_TAG:-latest}
     container_name: api
     volumes:
-      - ./ssl/privkey.pem:/app/ssl/privkey.pem
-      - ./ssl/server.crt:/app/ssl/server.crt
-      - ./ssl/server.key.bak:/app/ssl/server.key
+      - .ssl/ca.crt:/app/ssl/ca.crt:ro
+      # - ./ssl/privkey.pem:/app/ssl/privkey.pem
+      # - ./ssl/server.crt:/app/ssl/server.crt
+      # - ./ssl/server.key.bak:/app/ssl/server.key
     env_file:
       - .env
     networks:
